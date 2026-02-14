@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Motu Don’t Ignore This 😤💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+  background: linear-gradient(135deg,#ffd6e7,#ffb6d9);
+  overflow: hidden;
+}
+
+section {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.hidden { display: none; }
+
+h1, h2 { color: #d63384; }
+
+button {
+  padding: 12px 28px;
+  margin: 10px;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.primary { background: #ff4da6; color: white; }
+.secondary { background: #ff99cc; color: white; position: relative; }
+
+button:hover { transform: scale(1.1); }
+
+#gift {
+  font-size: 90px;
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+#gift:hover { transform: scale(1.2) rotate(15deg); }
+
+.heart {
+  position: fixed;
+  font-size: 22px;
+  animation: float 4s linear forwards;
+}
+
+@keyframes float {
+  from { transform: translateY(100vh); opacity: 1; }
+  to { transform: translateY(-10vh); opacity: 0; }
+}
+
+.confetti {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  animation: confettiFall 3s linear forwards;
+}
+
+@keyframes confettiFall {
+  from { transform: translateY(-10vh) rotate(0deg); }
+  to { transform: translateY(100vh) rotate(720deg); }
+}
+
+</style>
+</head>
+<body>
+
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Loading Screen -->
+<section id="loading">
+  <h1 id="loadingText">Loading Motu’s Cuteness Level... 0%</h1>
+</section>
+
+<!-- Intro -->
+<section id="intro" class="hidden">
+  <h1 id="typing"></h1>
+  <button class="primary" id="enterBtn" style="display:none;">
+    Enter at your own risk 😏
+  </button>
+</section>
+
+<!-- Poem -->
+<section id="poem" class="hidden">
+  <h2>
+    Roses are red 🌹<br>
+    Violets are blue 💙<br>
+    Motu thodi si gol hai...<br>
+    Par cute bhi bahut hai tu 😌
+  </h2>
+  <button class="primary" onclick="nextSection('question')">
+    Agree or I close this website 😤
+  </button>
+</section>
+
+<!-- Question -->
+<section id="question" class="hidden">
+  <h2>Will you be my forever Valentine Motu? 💘</h2>
+  <button class="primary" onclick="showGift()">Yes ❤️</button>
+  <button class="secondary" id="noBtn">No 🙄</button>
+</section>
+
+<!-- Gift -->
+<section id="giftSection" class="hidden">
+  <h2>Final Message Unlock Karne Ke Liye Gift Open Karo 🎁</h2>
+  <div id="gift">🎁</div>
+  <h1 id="finalMsg" class="hidden">
+    Aunty Ko Khush Karne ka bhi socha kar bhai 😂❤️ <br><br>
+    <span style="font-size:18px; color:#c2185b;">
+      Jokes apart… I’m genuinely lucky to have you.
+    </span>
+    <br><br>
+    Happy Valentine’s Motu 💖
+  </h1>
+</section>
+
+<script>
+
+// Start music on first click
+document.addEventListener("click", function() {
+  document.getElementById("bgMusic").play();
+}, { once: true });
+
+// Loading animation
+let percent = 0;
+let loadingInterval = setInterval(function(){
+  percent++;
+  document.getElementById("loadingText").innerText =
+    "Loading Motu’s Cuteness Level... " + percent + "%";
+
+  if(percent >= 100){
+    clearInterval(loadingInterval);
+    document.getElementById("loadingText").innerText =
+      "ERROR: TOO CUTE 💖";
+    setTimeout(function(){
+      nextSection('intro');
+    },1500);
+  }
+},30);
+
+// Typing effect
+const text = "Warning ⚠️ This website is specially made for Motu 💖";
+let index = 0;
+function typeEffect() {
+  if (index < text.length) {
+    document.getElementById("typing").innerHTML += text.charAt(index);
+    index++;
+    setTimeout(typeEffect, 40);
+  } else {
+    document.getElementById("enterBtn").style.display = "inline-block";
+  }
+}
+setTimeout(typeEffect,3500);
+
+document.getElementById("enterBtn").onclick = function(){
+  nextSection('poem');
+};
+
+function nextSection(id){
+  document.querySelectorAll("section").forEach(s => s.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
+
+// Moving + shrinking No button
+let scale = 1;
+document.getElementById("noBtn").addEventListener("mouseover", function(){
+  this.style.position = "absolute";
+  this.style.top = Math.random()*80 + "%";
+  this.style.left = Math.random()*80 + "%";
+  scale -= 0.1;
+  if(scale > 0.3){
+    this.style.transform = "scale(" + scale + ")";
+  }
+});
+
+function showGift(){
+  nextSection('giftSection');
+}
+
+document.getElementById("gift").onclick = function(){
+  document.getElementById("finalMsg").classList.remove("hidden");
+  createHearts();
+  createConfetti();
+};
+
+function createHearts(){
+  for(let i=0;i<25;i++){
+    let heart = document.createElement("div");
+    heart.innerHTML="❤️";
+    heart.className="heart";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.animationDuration=(Math.random()*2+2)+"s";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),4000);
+  }
+}
+
+function createConfetti(){
+  const colors=["#ff4da6","#ff99cc","#ffffff","#ff66b2"];
+  for(let i=0;i<40;i++){
+    let confetti=document.createElement("div");
+    confetti.className="confetti";
+    confetti.style.left=Math.random()*100+"vw";
+    confetti.style.background=colors[Math.floor(Math.random()*4)];
+    document.body.appendChild(confetti);
+    setTimeout(()=>confetti.remove(),3000);
+  }
+}
+
+</script>
+
+</body>
+</html>
